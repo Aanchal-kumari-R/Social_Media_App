@@ -1,7 +1,8 @@
-from django.shortcuts import render   
+from django.shortcuts import render  ,redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate , login
-from .forms import LoginForm
+from .forms import LoginForm 
+from django.contrib.auth import logout
 
 # Create your views here. 
 
@@ -18,4 +19,8 @@ def user_login(request):
                 return HttpResponse("Invalid credentials")
     else:     
         form = LoginForm() 
-    return render(request,'users/login.html',{'form':form})
+    return render(request,'users/login.html',{'form':form}) 
+
+def logout_view(request):
+    logout(request)
+    return render(request,'users/logout.html')
