@@ -10,7 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path 
+from pathlib import Path  
+import os 
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -126,5 +127,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login' 
 LOGOUT_URL = 'logout' 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = os.path.join(BASE_DIR,'media/') 
+
 
