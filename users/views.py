@@ -32,8 +32,9 @@ def logout_view(request):
 @login_required
 def index(request):  
     current_user = request.user 
-    posts = Post.objects.filter(user=current_user)
-    return render(request,'users/index.html',{'posts':posts}) 
+    posts = Post.objects.filter(user=current_user) 
+    profile = Profile.objects.filter(user=current_user).first()
+    return render(request,'users/index.html',{'posts':posts,'profile':profile}) 
 
 def register(request): 
     if request.method == 'POST': 
