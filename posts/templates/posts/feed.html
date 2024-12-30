@@ -1,4 +1,5 @@
-{% extends "users/base.html" %} 
+{% extends "users/base.html" %}  
+{% load mathfilters %}
 {% load static %}
 {% block body  %} 
 <div class="flex justify-center mt-5 pt-10"> 
@@ -17,12 +18,28 @@
         <img src="{{post.image.url}}">     
         </div>  
         <div class="px-6 py-4"> 
-            <div class="icon-container flex gap-3"> 
-                <img class="h-7 w-7" src="{% static 'users/images/heart_icon.png' %}" alt="">
+            <div class="icon-container flex gap-4"> 
+                <a id="{{ post.id }}" class="btn-like">  
+                    {% if logged_user in post.liked_by.all %} 
+                     <img class="h-7 w-7" src="{% static 'users/images/red_heart_icon.png' %}" alt=""> 
+                     {% else %}
+                    <img class="h-7 w-7" src="{% static 'users/images/white_heart_icon.png' %}" alt=""> 
+                    {% endif %}
+                </a>
                 <img class="h-5 w-5" src="{% static 'users/images/comment_icon.png' %}" alt="">
                 <img class="h-5 w-5" src="{% static 'users/images/share_icon.png' %}" alt="">
             </div>
-        </div> 
+        </div>   
+          <div> 
+            {% if post.liked_by.count < 1 %} 
+            {% elif post.liked_by.count == 1 %} 
+            {{post.liked_by.first }} Likes this 
+            {% elif post.liked_by.count > 1 %} 
+            {{post.liked_by.first }} & {{ post.liked_by.count|sub:1}} Other Likes this 
+            {% endif %}
+          </div>
+
+
         <div class="px-6 py-4"> 
        <div class="font-bold text-xl mb-2">{{post.title}}</div> 
        <p class="text-gray-700 text-base">{{post.caption}}</p>
@@ -32,7 +49,22 @@
     </a>
      <!--Cards ends here--> 
      {% endfor %}
-</div>
+</div>  
+
+<script type="text/javascript">      
+    
+    window.CSRF_TOKEN = "{{  csrf_token }}"
+    $(document).on('click','.btn-like',function(){ 
+        var post_id = this.id; 
+        $.ajax({ 
+            method:"POST", 
+            url:'/posts/like',  
+            data : {post_id:post_id,csrfmiddlewaretoken:window.CSRF_TOKEN}
+        }) 
+        window.location.href = "http://127.0.0.1:8000/posts/feed/"
+    })
+
+</script>
 
 {% endblock  %}  
 
