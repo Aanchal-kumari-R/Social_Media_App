@@ -14,7 +14,15 @@
             <div class="user-container flex  mx-5 my-5"> 
                 <img class="h-10 w-10 rounded-full" src="{{post.user.profile.photo.url}}" alt=""> 
               <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div> 
-        </div>
+        </div>    
+
+
+        <div class="px-2 py-2"> 
+            <div class="font-bold text-xl mb-1">{{post.title}}</div> 
+            <p class="text-gray-700 text-base">{{post.caption}}</p>
+             </div> 
+
+
         <img src="{{post.image.url}}">     
         </div>  
         <div class="px-6 py-4"> 
@@ -40,10 +48,33 @@
           </div>
 
 
-        <div class="px-6 py-4"> 
-       <div class="font-bold text-xl mb-2">{{post.title}}</div> 
-       <p class="text-gray-700 text-base">{{post.caption}}</p>
+      
+
+        <div class="px-5 py-5">  
+            {% for comment in post.comments.all %} 
+            <b>{{comment.posted_by}} : </b>{{comment.body}}
+        </br>
+            {% endfor %}
         </div> 
+        <div class="px-5 py-5"> 
+            <form method="post" class="bg-white rounded"> 
+               {% csrf_token %}   
+               
+                <label class="block text-grey-700 text-sm font-bold">Add Comment</label>
+              
+               <div class="flex">
+               <div> 
+                  {{ comment_form.body }}
+               </div> 
+               <div> 
+                <input type="hidden" name="post_id" id="post_id" value="{{ post.id }}">
+                <input type="hidden" name="posted_by" id="posted_by" value="{{ logged_user }}">
+               </div> 
+                <button class="bg-green-500 text-white px-5 py-2 mx-2" type="submit">Add</button> 
+            </div>
+            </form> 
+
+        </div>
 
 
     </a>
